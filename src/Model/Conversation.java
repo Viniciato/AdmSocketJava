@@ -47,4 +47,8 @@ public class Conversation implements Serializable {
     public void setRoom(int room) {
         this.room = room;
     }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

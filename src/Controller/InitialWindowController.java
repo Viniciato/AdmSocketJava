@@ -6,16 +6,11 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.Socket;
@@ -48,11 +43,13 @@ public class InitialWindowController {
     }
 
     @FXML void exit(ActionEvent event) throws IOException{
-        exit(event);
+
     }
 
-    @FXML void changeStatus(ActionEvent event) {
 
+    @FXML void getHistory(ActionEvent event) throws Exception{
+        getHistory();
+        escutar();
     }
 
     @FXML void sendMessage(ActionEvent event) throws IOException{
@@ -66,8 +63,37 @@ public class InitialWindowController {
         textLabel.setText("");
     }
 
-    public void escutar(){
+    public void getHistory() throws Exception{
+        t.stop();
+        Conversation conv = conversationsTable.getSelectionModel().getSelectedItem();
+        if(conv == null)
+            System.out.println("Erro selecionar Tabela");
+        else {
+            t.stop();
+            messagesLabel.clear();
+            ArrayList<String> array = new ArrayList<>();
+            array.add("8888");
+            array.add("7777");
+            array.add(String.valueOf(conv.getRoom()));
+            bufferedWriter.write(array.toString()+"\r\n");
+            System.out.println(array);
+            bufferedWriter.flush();
+            Thread.sleep(1000);
 
+            OutputStream outputStream = socket.getOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(outputStream);
+            InputStream is = socket.getInputStream();
+            ObjectInputStream input = new ObjectInputStream(is);
+            ArrayList<String> history = (ArrayList<String>) input.readObject();
+            for (String msg : history){
+                messagesLabel.appendText(msg);
+            }
+        }
+
+    }
+
+
+    public void escutar(){
         Task task = new Task() {
             @Override
             protected Object call() throws Exception {
