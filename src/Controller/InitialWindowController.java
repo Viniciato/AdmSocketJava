@@ -44,11 +44,6 @@ public class InitialWindowController {
         escutar();
     }
 
-    @FXML void exit(ActionEvent event) throws IOException{
-
-    }
-
-
     @FXML void getHistory(ActionEvent event) throws Exception{
         getHistory();
         escutar();
