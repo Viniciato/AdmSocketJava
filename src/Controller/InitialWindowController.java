@@ -40,6 +40,8 @@ public class InitialWindowController {
 
     @FXML void enterRoom(ActionEvent event) throws Exception{
         enterInRoom();
+        getHistory();
+        escutar();
     }
 
     @FXML void exit(ActionEvent event) throws IOException{
@@ -64,7 +66,6 @@ public class InitialWindowController {
     }
 
     public void getHistory() throws Exception{
-        t.stop();
         Conversation conv = conversationsTable.getSelectionModel().getSelectedItem();
         if(conv == null)
             System.out.println("Erro selecionar Tabela");
@@ -163,6 +164,7 @@ public class InitialWindowController {
             System.out.println("Erro selecionar Tabela");
         else
         {
+            t.stop();
             ArrayList<String> array = new ArrayList<>();
             array.add("8888");
             array.add("chSt");
@@ -172,9 +174,6 @@ public class InitialWindowController {
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
             bufferedWriter.write(array.toString()+"\r\n");
             bufferedWriter.flush();
-
-            Thread.sleep(2000);
-
         }
     }
     public void setSocket(Socket socket) throws IOException {
